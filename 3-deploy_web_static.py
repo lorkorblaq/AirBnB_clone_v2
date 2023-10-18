@@ -5,23 +5,30 @@ distributes an archive to the web servers
 """
 # fabfile.py
 
-from fabric.api import env, local, put, run
+from fabric.api import *
 from datetime import datetime
 from os.path import exists, isdir
-env.hosts = ['18.234.169.154', '54.90.8.129']
-env.user = 'ubuntu'
 
+env.use_ssh_config = True
+env.key_filename = '/home/blaq/.ssh/school'
+env.hosts = ['blaq1', 'blaq2']
+#env.user= 'ubuntu'
 
-def do_pack():
-    """generates a tgz archive"""
-    try:
-        date = datetime.now().strftime("%Y%m%d%H%M%S")
-        if isdir("versions") is False:
-            local("mkdir versions")
-        file_name = "versions/web_static_{}.tgz".format(date)
-        local("tar -cvzf {} web_static".format(file_name))
-        return file_name
-    except:
+def do_pack(delete_previous=True):
+    """
+        Compress before sending
+    """
+    if delete_previous:
+        # Delete the previous archive
+        local("rm -f versions/web_static*.tgz")
+    local("mkdir -p versions")
+    date = datetime.now().strftime("%Y%m%d%H%M%S")
+    archive_path = "versions/web_static_{}.tgz".format(date)
+    t_gzip_archive = local("tar -cvzf {} web_static".format(archive_path))
+    print("archived created")
+    if t_gzip_archive.succeeded:
+        return archive_path
+    else:
         return None
 
 
@@ -52,3 +59,5 @@ def deploy():
     if archive_path is None:
         return False
     return do_deploy(archive_path)
+
+
