@@ -3,7 +3,8 @@
 import os
 from fabric.api import *
 
-env.hosts = ["18.234.169.154", "54.90.8.129"]
+env.use_ssh_config = True
+env.hosts = ['blaq1', 'blaq2']
 
 
 def do_clean(number=0):
@@ -25,4 +26,4 @@ def do_clean(number=0):
         archives = run("ls -tr").split()
         archives = [a for a in archives if "web_static_" in a]
         [archives.pop() for i in range(number)]
-        [run("rm -rf ./{}".format(a)) for a in archives]
+        [sudo("rm -rf ./{}".format(a)) for a in archives]

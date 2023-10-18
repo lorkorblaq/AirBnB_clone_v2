@@ -36,7 +36,7 @@ server {
 
     location /hbnb_static {
         alias /data/webstatic/current;
-        index index.html index.htm;
+        index 0-index.html index.htm;
     }
 
     error_page 404 /404.html;

@@ -24,6 +24,7 @@ echo "server {
     listen [::]:80;
     server_name www.lorkorblaq.tech;
     return 301 https://lorkorblaq.tech$request_uri;
+    
 }
 
 server {
@@ -32,11 +33,13 @@ server {
     location / {
         root /var/www/html/;
         index index.html index.htm;
+        
     }
 
-    location /hbnb_static {
-        alias /data/webstatic/current;
-        index index.html index.htm;
+    location /hbnb_static/ {
+        alias /data/web_static/current/;
+        index 0-index.html index.htm;
+        try_files $uri $uri/ =404;
     }
 
     error_page 404 /404.html;
