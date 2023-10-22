@@ -10,9 +10,9 @@ from datetime import datetime
 from os.path import exists, isdir
 
 env.use_ssh_config = True
-# env.key_filename = '/home/blaq/.ssh/school'
+
 env.hosts = ['blaq1', 'blaq2']
-#env.user= 'ubuntu'
+
 
 
 @runs_once
